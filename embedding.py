@@ -340,7 +340,7 @@ def negativeSampling(keptEdges, removedEdges, folder, write):
 
     if write:
         with open(folder + 'negEdges.csv', 'w') as f:
-            writer =csv.writer(f)
+            writer = csv.writer(f)
             writer.writerow(['subject', 'predicate', 'object'])
             writer.writerows(negEdges)
 
@@ -406,15 +406,17 @@ def evaluate_embeddingsTOP10(
     # --- Helper to compute scores + labels ---
     def compute_scores(edge_file: str, is_positive: bool) -> List[Tuple[str, str, str, float, str]]:
         with open(edge_file, "r") as f:
-            reader = csv.reader(f, delimiter="\t" if is_positive else ",")
+            reader = csv.reader(f, delimiter="\t" if is_positive else "\t")
             edges = list(reader)
+            print(edges)
         edges.pop(0)  # drop header
-
+        print(edges)
         results = []
         for edge in edges:
             if len(edge) > 1:
                 if is_positive:
-                    subj, pred, obj = edge[-2], edge[2], edge[-1]
+                    #subj, pred, obj = edge[-2], edge[2], edge[-1]
+                    subj, pred, obj = edge[0], edge[1], edge[2]
                 else:
                     subj, pred, obj = edge[0], edge[1], edge[2]
 
@@ -430,6 +432,7 @@ def evaluate_embeddingsTOP10(
                         classification = "FP" if score >= threshold else "TN"
 
                     results.append((subj, pred, obj, score, classification))
+        print(results)
         return results
 
     # --- Scores for positives and negatives ---
@@ -462,7 +465,10 @@ def evaluate_embeddingsTOP10(
     #true_pairs = {(obj, subj) for subj, _, obj, _, _ in pos_results if obj.startswith("MONDO:")}
     diseases = [obj for subj, _, obj, _, c in pos_results if obj.startswith("MONDO:") and c =='TP']
     genes1 = [node for node in embeddingDF.index if node.startswith("HGNC:")]
-    genes = rareDiseaseSubsets.getGenesWODisConns('removedEdges.tsv', 'Genes Without Disease Conn.txt')
+    #genes = rareDiseaseSubsets.getGenesWODisConns('removedEdges.tsv', 'Genes Without Disease Conn.txt')
+    with open("geneCandidates.txt", 'r') as gcF:
+        genes = gcF.read().splitlines()
+    #print(genes)
     print('Old Num Genes : ', len(genes1))
 
     print('Num genes: ', len(genes))
@@ -589,3 +595,8 @@ def topPhenSimGenes(disease):
         geneResults.append(subject.get("id", ""))
 
     return geneResults
+
+'''
+genes = rareDiseaseSubsets.getGenesWODisConns('removedEdges.tsv', 'Genes Without Disease Conn.txt')
+with open('geneCandidates.txt', 'w') as f:
+    f.write("\n".join(genes))'''
