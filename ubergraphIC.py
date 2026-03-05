@@ -179,8 +179,8 @@ def run_filter_kg(
     print(f"Nodes removed: {len(removed):,}")
 
     # Output files
-    out_nodes = f"{kg_folder}/monarch-kg_nodes.filtered.tsv"
-    out_edges = f"{kg_folder}/monarch-kg_edges.filtered.tsv"
+    out_nodes = f"{kg_folder}/monarch-kg_nodes.filtered_all.tsv"
+    out_edges = f"{kg_folder}/monarch-kg_edges.filtered_all.tsv"
 
     print("Filtering KG…")
     filter_kg(nodes, edges, removed, out_nodes, out_edges)
@@ -203,6 +203,6 @@ def run_filter_kg(
 if __name__ == "__main__":
     run_filter_kg(
         kg_folder="monarch-kg-Sept2025",
-        threshold=1.0,
+        threshold=100,
         batch_size=100
     )

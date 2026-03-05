@@ -219,7 +219,7 @@ import pandas as pd
 
 
 def remove_edges(source_file, remove_file, output_file,
-                 key_cols=["subject", "predicate", "object"]):
+                 key_cols=["subject", "object"]):
     """
     Remove edges from source_file that appear in remove_file based on key columns.
 

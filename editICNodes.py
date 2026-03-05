@@ -13,15 +13,15 @@ IC_THRESHOLD = 80        # Remove terms with IC < threshold
 BATCH_SIZE = 200          # Batch size for SPARQL VALUES
 DELAY = 0.2               # Delay between SPARQL calls
 
-KG_DIR = Path("monarch-kg-Sept2025")
-NODES_FILE = KG_DIR / "monarch-kg_nodes.tsv"
-EDGES_FILE = KG_DIR / "monarch-kg_edges.tsv"
+KG_DIR = Path("robokop/rk_tsvs")
+NODES_FILE = KG_DIR / "rk_nodes_out.tsv"
+EDGES_FILE = KG_DIR / "rk_edges_out.tsv"
 
-OUTPUT_NODES = KG_DIR / "monarch-kg_nodes.filtered_80.tsv"
-OUTPUT_EDGES = KG_DIR / "monarch-kg_edges.filtered_80.tsv"
+OUTPUT_NODES = KG_DIR / "rk-kg_nodes.filtered_80.tsv"
+OUTPUT_EDGES = KG_DIR / "rk-kg_edges.filtered_80.tsv"
 
-LOG_FILE = "kg_ic_filter.log"
-SUMMARY_FILE = "kg_ic_filter_summary.txt"
+LOG_FILE = "rkkg_ic_filter80.log"
+SUMMARY_FILE = "rkkg_ic_filter_summary80.txt"
 
 ONTOLOGIES = {
     "GO": "http://purl.obolibrary.org/obo/GO_",
@@ -107,7 +107,7 @@ def load_nodes():
     """
     nodes = {}
     with open(NODES_FILE, "r", encoding="utf-8") as f:
-        reader = csv.DictReader(f, delimiter="\t")
+        reader = csv.DictReader(f, delimiter=",")
         for row in reader:
             nodes[row["id"]] = row
     return nodes
@@ -149,32 +149,37 @@ def filter_and_save(nodes, low_ic_set):
     with open(NODES_FILE, "r", encoding="utf-8") as f_in, \
          open(OUTPUT_NODES, "w", encoding="utf-8", newline="") as f_out:
 
-        reader = csv.DictReader(f_in, delimiter="\t")
+        reader = csv.DictReader(f_in, delimiter=",")
         writer = csv.DictWriter(f_out, delimiter="\t", fieldnames=reader.fieldnames)
         writer.writeheader()
 
         for row in reader:
             if row["id"] not in low_ic_set:
                 writer.writerow(row)
+                c=0
 
     # -----------------------------
     # Filter edges
     # -----------------------------
     removed_edges = 0
+    total_edges = 0
     with open(EDGES_FILE, "r", encoding="utf-8") as f_in, \
          open(OUTPUT_EDGES, "w", encoding="utf-8", newline="") as f_out:
 
-        reader = csv.DictReader(f_in, delimiter="\t")
+        reader = csv.DictReader(f_in, delimiter=",")
         writer = csv.DictWriter(f_out, delimiter="\t", fieldnames=reader.fieldnames)
         writer.writeheader()
 
         for row in reader:
             subj = row["subject"]
             obj = row["object"]
+            total_edges += 1
             if subj not in low_ic_set and obj not in low_ic_set:
                 writer.writerow(row)
+                c=0
             else:
                 removed_edges += 1
+    logging.info(f"Total Edges: {total_edges}")
 
     return kept_nodes, removed_edges
 
@@ -218,7 +223,7 @@ def plot_multi_ontology_ic_histogram(ic_maps, bins=50):
         )
         i+=1
 
-    plt.title("Information Content Distribution by Ontology")
+    plt.title("Information Content Distribution by Ontology for Robokopgtfr")
     plt.xlabel("Information Content (IC)")
     plt.ylabel("Number of Terms")
     plt.legend()
