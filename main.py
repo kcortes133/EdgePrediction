@@ -12,7 +12,7 @@ args = parser.parse_args()
 random.seed(42)
 
 def main():
-    kgFolder = 'monarch-kg-Sept2025/'
+    kgFolder = 'monarch-kg-Sept2025/monarch-kg-Sept2025/'
     edgesF = kgFolder + 'monarch-kg_edges.TestSet.tsv'
     nodesF = kgFolder + 'monarch-kg_nodes.tsv'
     out_folder = "IC_removal_none/"
@@ -54,8 +54,8 @@ def main():
 
     # candidate genes for eval are limited to protein coding genes with no disease connections in the KG
     # Step 4: Evaluate and save results
-    confM, allR = embedding.evaluate_embeddingsTOP10(gTest, out_folder+'FLOE_embeddings.csv', 'TP_hgnc_mondo_edges.tsv', 'TN_hgnc_mondo_edges1.tsv', out_folder+'top100Figure.png', out_folder +'top10results.csv', out_folder+'HMI_top.csv', out_folder+'HMI10_summary.csv', out_folder)
-    print(confM)
+    #confM, allR = embedding.evaluate_embeddingsTOP10(gTest, out_folder+'FLOE_embeddings.csv', 'TP_hgnc_mondo_edges.tsv', 'TN_hgnc_mondo_edges1.tsv', out_folder+'top100Figure.png', out_folder +'top10results.csv', out_folder+'HMI_top.csv', out_folder+'HMI10_summary.csv', out_folder)
+    #print(confM)
 # removed 8822 has mode of inheritance edges they are common in the neg samplling meta paths
 
 if __name__ == "__main__":
