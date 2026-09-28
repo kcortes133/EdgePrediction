@@ -11,7 +11,7 @@ import seaborn as sns
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 
 RESULTS_GLOB = os.path.join(PROJECT_ROOT, "results_*_ranks")
-GENE_RANKS_FILE = "edge_predictions.tsv"
+GENE_RANKS_FILE = "gene_ranks.tsv"
 CONFUSION_FILE = "confusion_summary.tsv"
 RARE_DISEASE_FILE = os.path.join(PROJECT_ROOT, "analysis", "data", "Rare Disease Annotation.csv")
 
@@ -37,7 +37,7 @@ sns.set(style="whitegrid", font_scale=1.1)
 # ======================
 def get_subset(folder):
     name = os.path.basename(folder)
-    prefix, suffix = RESULTS_GLOB.split("*")
+    prefix, suffix = os.path.basename(RESULTS_GLOB).split("*")
     return name[len(prefix):len(name) - len(suffix)]
 
 
@@ -104,7 +104,7 @@ def get_rare_df(combined, rare_map):
     print(rare_map)
     df = combined.merge(
         rare_map,
-        left_on="destinations",
+        left_on="disease",
         right_index=True,
         how="inner"   # only rare diseases
     )

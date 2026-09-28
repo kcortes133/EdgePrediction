@@ -82,13 +82,15 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--runs", default=str(ROOT / "analysis/results"),
                     help="Folder containing results_<subset>/ run folders")
+    ap.add_argument("--suffix", default="",
+                    help='Run-folder suffix, e.g. "_ranks" for results_<subset>_ranks/')
     ap.add_argument("--out", default=str(ROOT / "analysis/results/paper"))
     args = ap.parse_args()
     runs, out = Path(args.runs), Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
 
     # ---- Table 2 ------------------------------------------------------
-    t2 = pd.DataFrame({LABELS[s]: load_confusion(runs / f"results_{s}") for s in SUBSETS}).T
+    t2 = pd.DataFrame({LABELS[s]: load_confusion(runs / f"results_{s}{args.suffix}") for s in SUBSETS}).T
     t2 = t2[["F1", "AUROC", "TP", "FN", "FP", "TN"]]
     t2.index.name = "Subset"
     t2.to_csv(out / "table2_classification.tsv", sep="\t", float_format="%.3f")
@@ -102,7 +104,7 @@ def main():
     # ---- Ranking ------------------------------------------------------
     tp = pd.read_csv(ROOT / "data/TP_hgnc_mondo_edges.tsv", sep="\t")
     tp_pairs = set(zip(tp["object"], tp["subject"])) | set(zip(tp["subject"], tp["object"]))
-    ranks = {s: load_ranks(runs / f"results_{s}") for s in SUBSETS}
+    ranks = {s: load_ranks(runs / f"results_{s}{args.suffix}") for s in SUBSETS}
     consistent = check_consistency(ranks, tp_pairs)
 
     rare = pd.read_csv(ROOT / "analysis/data/Rare Disease Annotation.csv")

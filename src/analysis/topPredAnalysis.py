@@ -76,12 +76,13 @@ def summarize_gene_ranks(base_dir, output_file="model_summary.tsv"):
 
 if __name__ == "__main__":
     base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
-    outdir = 'comparison_figures_rand.tsv'
+    outdir = 'analysis/data/comparison_figures_rand.tsv'
 
     summarize_gene_ranks(base_dir, outdir)
 
 import os
 import pandas as pd
+from collections import Counter
 
 
 def normalize_pair(a, b):
@@ -284,7 +285,7 @@ def report_duplicates(file_path):
 
 if __name__ == "__main__":
     base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')) + os.sep
-    tp_file = "TP_hgnc_mondo_edges.tsv"
-    output_file = "comparison_figures_randTP_filtered.tsv"
+    tp_file = "data/TP_hgnc_mondo_edges.tsv"
+    output_file = "analysis/data/comparison_figures_randTP_filtered.tsv"
 
     summarize_gene_ranks(base_dir, tp_file, output_file)

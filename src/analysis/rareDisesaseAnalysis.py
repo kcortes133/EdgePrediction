@@ -8,8 +8,8 @@ import pandas as pd
 # CONFIG
 # -----------------------------
 RESULTS_GLOB = "results_*_ranks"
-ANNOTATION_FILE = "Rare Disease Annotation.csv"
-OUTPUT_FILE = "rare_disease_analysis.tsv"
+ANNOTATION_FILE = "analysis/data/Rare Disease Annotation.csv"
+OUTPUT_FILE = "analysis/data/rare_disease_analysis.tsv"
 
 # -----------------------------
 # LOAD ANNOTATIONS
@@ -170,8 +170,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 
-INPUT_FILE = "rare_disease_analysis.tsv"
-OUTPUT_DIR = "annotation_subset_plots"
+INPUT_FILE = "analysis/data/rare_disease_analysis.tsv"
+OUTPUT_DIR = "analysis/results/annotation_subset_plots"
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
@@ -311,8 +311,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import os
 
-INPUT_FILE = "rare_disease_analysis.tsv"
-OUTPUT_DIR = "heatmaps"
+INPUT_FILE = "analysis/data/rare_disease_analysis.tsv"
+OUTPUT_DIR = "analysis/results/heatmaps"
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
