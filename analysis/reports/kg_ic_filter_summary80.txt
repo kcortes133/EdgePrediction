@@ -1,0 +1,5 @@
+=== KG FILTER SUMMARY ===
+Total nodes: 1344798
+Removed nodes: 6448
+Remaining nodes: 1338350
+Removed edges: 2763428

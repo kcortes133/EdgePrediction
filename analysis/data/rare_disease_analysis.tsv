@@ -1,0 +1,46 @@
+subset	annotation	value	n	median_prediction	TP	FN
+results_100_ranks	Has Gene	1	5487	0.654428	3577	1910
+results_100_ranks	Has Gene with Ortholog	0	9	0.7064793	5	4
+results_100_ranks	Has Gene with Ortholog	1	5478	0.65440605	3572	1906
+results_100_ranks	Has Phenotype	0	353	0.14909989	103	250
+results_100_ranks	Has Phenotype	1	5134	0.671576615	3474	1660
+results_100_ranks	Has Genotype	0	4211	0.659313	2793	1418
+results_100_ranks	Has Genotype	1	1276	0.624830785	784	492
+results_100_ranks	Has GO	0	5476	0.654272	3569	1907
+results_100_ranks	Has GO	1	11	0.7633538	8	3
+results_40_ranks	Has Gene	1	5487	0.9132394	4705	782
+results_40_ranks	Has Gene with Ortholog	0	9	0.97209555	9	0
+results_40_ranks	Has Gene with Ortholog	1	5478	0.9131565500000001	4696	782
+results_40_ranks	Has Phenotype	0	353	0.560057	189	164
+results_40_ranks	Has Phenotype	1	5134	0.9261647500000001	4516	618
+results_40_ranks	Has Genotype	0	4211	0.9106824	3629	582
+results_40_ranks	Has Genotype	1	1276	0.92305355	1076	200
+results_40_ranks	Has GO	0	5476	0.9130333500000001	4694	782
+results_40_ranks	Has GO	1	11	0.93609023	11	0
+results_60_ranks	Has Gene	1	5487	0.77509725	3714	1773
+results_60_ranks	Has Gene with Ortholog	0	9	0.9275485	8	1
+results_60_ranks	Has Gene with Ortholog	1	5478	0.774412605	3706	1772
+results_60_ranks	Has Phenotype	0	353	0.31735063	132	221
+results_60_ranks	Has Phenotype	1	5134	0.80239043	3582	1552
+results_60_ranks	Has Genotype	0	4211	0.76475453	2850	1361
+results_60_ranks	Has Genotype	1	1276	0.81547465	864	412
+results_60_ranks	Has GO	0	5476	0.774412605	3704	1772
+results_60_ranks	Has GO	1	11	0.84822553	10	1
+results_80_ranks	Has Gene	1	5487	0.84643316	4199	1288
+results_80_ranks	Has Gene with Ortholog	0	9	0.84055096	9	0
+results_80_ranks	Has Gene with Ortholog	1	5478	0.846560955	4190	1288
+results_80_ranks	Has Phenotype	0	353	0.38374865	148	205
+results_80_ranks	Has Phenotype	1	5134	0.86688473	4051	1083
+results_80_ranks	Has Genotype	0	4211	0.84266347	3215	996
+results_80_ranks	Has Genotype	1	1276	0.861263465	984	292
+results_80_ranks	Has GO	0	5476	0.846304465	4188	1288
+results_80_ranks	Has GO	1	11	0.95170903	11	0
+results_none_ranks	Has Gene	1	5487	0.8687148	4573	914
+results_none_ranks	Has Gene with Ortholog	0	9	0.8538216	9	0
+results_none_ranks	Has Gene with Ortholog	1	5478	0.868796285	4564	914
+results_none_ranks	Has Phenotype	0	353	0.5321545	187	166
+results_none_ranks	Has Phenotype	1	5134	0.881886305	4386	748
+results_none_ranks	Has Genotype	0	4211	0.86909324	3519	692
+results_none_ranks	Has Genotype	1	1276	0.86820557	1054	222
+results_none_ranks	Has GO	0	5476	0.868958785	4562	914
+results_none_ranks	Has GO	1	11	0.82109416	11	0

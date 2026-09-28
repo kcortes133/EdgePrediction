@@ -1,0 +1,19 @@
+Metric,Value
+Total rare diseases (full dataset),11648
+Rare diseases in TP test set,2455
+Total genes in TP test set,2343
+Total disease–gene pairs in TP test set,3048
+Diseases with known gene associations (TP set),2073
+Genes in known associations (TP set),2739
+Known disease–gene association pairs (TP set),4376
+Diseases with Has Gene (TP set),2073
+Diseases with Has Gene with Ortholog (TP set),2068
+Diseases with Has Phenotype (TP set),1932
+Diseases with Has Genotype (TP set),399
+Diseases with Has GO (TP set),4
+Total disease occurrences (TP set),3201
+Unique diseases (TP set),2455
+Non-unique disease occurrences (TP set),746
+Total gene occurrences (TP set),3201
+Unique genes (TP set),2343
+Non-unique gene occurrences (TP set),858

@@ -1,0 +1,6 @@
+,source,target,value
+0,Rare Diseases,With Associated Gene,6121
+1,Rare Diseases,Without Associated Gene,5527
+2,Without Associated Gene,Has Phenotype Association,2147
+3,Without Associated Gene,Has GO Association,18
+4,Without Associated Gene,Has Genotype Association,61

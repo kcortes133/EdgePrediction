@@ -1,0 +1,22 @@
+# Python >= 3.12 (developed on CPython 3.13.5; HPC runs used 3.12.1)
+
+# Embedding + edge prediction (GRAPE: ensmallen + embiggen)
+grape==0.2.5
+ensmallen==0.8.100
+embiggen==0.11.95
+scikit-learn==1.7.2
+numpy==2.2.6
+pandas==2.3.2
+
+# Figures
+matplotlib==3.10.6
+seaborn==0.13.2
+
+# Information-content queries (Ubergraph SPARQL endpoint)
+SPARQLWrapper==2.0.0
+
+# Only for src/preprocessing/rareDiseaseSubsets.py (rare-disease annotation
+# from a local Neo4j copy of the Monarch KG)
+neo4j==5.28.2
+holoviews==1.21.0
+upsetplot==0.9.0
