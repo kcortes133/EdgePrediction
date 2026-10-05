@@ -162,3 +162,34 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
+
+# ---------------------------------------------------------------
+# Project-specific (added for public release)
+# ---------------------------------------------------------------
+# Local-only material
+_archive/
+_to_delete/
+.claude/
+CLAUDE.md
+.idea/
+*.docx
+
+# Large knowledge-graph inputs (download separately; see data/README.md)
+monarch-kg-*/
+monarch-kg-*.zip
+analysis/results/primeKG/
+analysis/results/IC_removal_*/
+*embeddings*.csv
+IC_removal_*/
+
+# Loose intermediate files at repo root
+/*.csv
+/*.json
+/*.png
+/*.log
+
+# Debug byproduct of perceptronBatch.py
+*.tsvdupes.tsv
+
+# Claude session outputs (manuscript drafts, figures)
+Claude outputs/
