@@ -52,8 +52,15 @@ def load_subset_ranks(folder):
         print(f"Skipping {folder}: no {GENE_RANKS_FILE} found")
         return None
 
-    df = normalize_pairs(pd.read_csv(path, sep="\t"))
-    return df.groupby(["gene", "disease"], as_index=False)["rank"].min()
+    df = pd.read_csv(path, sep="\t")
+    # Each TP edge is ranked twice: once as disease -> candidate genes (the task in the
+    # paper) and once with the columns swapped, which ranks a MONDO id among genes for a
+    # gene query. Only the disease -> gene rows are meaningful, so keep those; do not take
+    # the min over both orientations (that inflates top-k).
+    df = df[df["disease"].astype(str).str.startswith("MONDO")]
+    df = df[pd.to_numeric(df["rank"], errors="coerce").notna()].copy()
+    df["rank"] = df["rank"].astype(int)
+    return df[["gene", "disease", "rank"]].drop_duplicates(["gene", "disease"])
 
 
 def load_all_subsets():

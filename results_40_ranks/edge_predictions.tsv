@@ -8085,7 +8085,6 @@ prediction	sources	destinations	edge_types	label
 0.39165062	HGNC:132	MONDO:0010790	biolink:gene_associated_with_condition	0
 0.39113447	HGNC:132	MONDO:0000914	biolink:causes	0
 0.73094034	HGNC:132	MONDO:0014131	biolink:gene_associated_with_condition	0
-0.97179824	HGNC:132	MONDO:0014343	biolink:gene_associated_with_condition	0
 0.5362236	HGNC:132	MONDO:0020603	biolink:causes	0
 0.4125981	HGNC:132	MONDO:0008637	biolink:gene_associated_with_condition	0
 0.9194324	HGNC:132	MONDO:0017401	biolink:causes	0
@@ -8529,7 +8528,6 @@ prediction	sources	destinations	edge_types	label
 0.8999776	HGNC:9587	MONDO:0024550	biolink:causes	0
 0.96726394	HGNC:9608	MONDO:0014302	biolink:causes	0
 0.9599819	HGNC:9608	MONDO:0010000	biolink:causes	0
-0.99574924	HGNC:9608	MONDO:0014343	biolink:gene_associated_with_condition	0
 0.9229201	HGNC:9608	MONDO:0025708	biolink:gene_associated_with_condition	0
 0.39907318	HGNC:9658	MONDO:0014947	biolink:gene_associated_with_condition	0
 0.117149696	HGNC:9658	MONDO:0033482	biolink:gene_associated_with_condition	0
@@ -10119,7 +10117,6 @@ prediction	sources	destinations	edge_types	label
 0.86133236	HGNC:11708	MONDO:0014984	biolink:gene_associated_with_condition	0
 0.32858586	HGNC:11724	MONDO:0014899	biolink:causes	0
 0.59875005	HGNC:11724	MONDO:0012521	biolink:causes	0
-0.9977755	HGNC:20324	MONDO:0014343	biolink:gene_associated_with_condition	0
 0.9061418	HGNC:11769	MONDO:0010790	biolink:causes	0
 0.93935025	HGNC:11769	MONDO:0011226	biolink:causes	0
 0.9478275	HGNC:11769	MONDO:0032685	biolink:gene_associated_with_condition	0
@@ -10741,7 +10738,6 @@ prediction	sources	destinations	edge_types	label
 0.6467103	MONDO:0014343	HGNC:2771	biolink:gene_associated_with_condition	0
 0.956772	MONDO:0014343	HGNC:2021	biolink:causes	0
 0.8262011	MONDO:0014343	HGNC:16947	biolink:gene_associated_with_condition	0
-0.97179824	MONDO:0014343	HGNC:132	biolink:gene_associated_with_condition	0
 0.964579	MONDO:0014343	HGNC:3702	biolink:causes	0
 0.61132735	MONDO:0014343	HGNC:3816	biolink:causes	0
 0.79959106	MONDO:0014343	HGNC:3951	biolink:causes	0
@@ -10760,7 +10756,6 @@ prediction	sources	destinations	edge_types	label
 0.99366295	MONDO:0014343	HGNC:7632	biolink:gene_associated_with_condition	0
 0.524322	MONDO:0014343	HGNC:9936	biolink:gene_associated_with_condition	0
 0.64899325	MONDO:0014343	HGNC:9142	biolink:gene_associated_with_condition	0
-0.99574924	MONDO:0014343	HGNC:9608	biolink:gene_associated_with_condition	0
 0.92915344	MONDO:0014343	HGNC:10560	biolink:causes	0
 0.8394484	MONDO:0014343	HGNC:9922	biolink:gene_associated_with_condition	0
 0.9561487	MONDO:0014343	HGNC:17296	biolink:causes	0
@@ -10797,7 +10792,6 @@ prediction	sources	destinations	edge_types	label
 0.75784135	MONDO:0014343	HGNC:11071	biolink:causes	0
 0.8555753	MONDO:0014343	HGNC:1449	biolink:causes	0
 0.7161435	MONDO:0014343	HGNC:11596	biolink:causes	0
-0.9977755	MONDO:0014343	HGNC:20324	biolink:gene_associated_with_condition	0
 0.8866131	MONDO:0014343	HGNC:11949	biolink:gene_associated_with_condition	0
 0.9186393	MONDO:0014343	HGNC:2505	biolink:gene_associated_with_condition	0
 0.9054499	MONDO:0014343	HGNC:20603	biolink:causes	0
@@ -11290,7 +11284,6 @@ prediction	sources	destinations	edge_types	label
 0.96550536	HGNC:13556	MONDO:0007537	biolink:causes	0
 0.9341832	HGNC:29077	MONDO:0007794	biolink:contributes_to	0
 0.97594833	HGNC:29077	MONDO:0044320	biolink:causes	0
-0.9797269	HGNC:29077	MONDO:0008377	biolink:contributes_to	0
 0.92023516	HGNC:5466	MONDO:0008310	biolink:gene_associated_with_condition	0
 0.83378166	HGNC:5466	MONDO:0975754	biolink:causes	0
 0.8996604	HGNC:5466	MONDO:0014808	biolink:gene_associated_with_condition	0
@@ -12081,7 +12074,6 @@ prediction	sources	destinations	edge_types	label
 0.6308673	MONDO:0008377	HGNC:4887	biolink:gene_associated_with_condition	0
 0.9008638	MONDO:0008377	HGNC:5248	biolink:causes	0
 0.74928546	MONDO:0008377	HGNC:5439	biolink:gene_associated_with_condition	0
-0.9797269	MONDO:0008377	HGNC:29077	biolink:contributes_to	0
 0.2506195	MONDO:0008377	HGNC:6619	biolink:gene_associated_with_condition	0
 0.78119814	MONDO:0008377	HGNC:1968	biolink:causes	0
 0.81700397	MONDO:0008377	HGNC:19691	biolink:gene_associated_with_condition	0

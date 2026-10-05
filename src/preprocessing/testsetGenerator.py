@@ -143,43 +143,53 @@ def negativeSampling(keptEdges, removedEdges, folder, write):
 # =====================
 # Main
 # =====================
-def main():
-    '''
+def sample_test_edges():
+    """Step 1 (run once): hold out SUBSET_FRACTION of the HGNC->MONDO edges shared by
+    all graph versions and write them to REMOVED_EDGES_FILE (data/TP_hgnc_mondo_edges.tsv
+    in the repository is the output of this step)."""
     random.seed(RANDOM_SEED)
 
     print("Loading HGNC→MONDO edges from all files...")
     file_edge_sets = [load_edge_keys(p) for p in INPUT_FILES]
 
-    print("Computing intersection across all four files...")
+    print("Computing intersection across all graph versions...")
     shared_edges = set.intersection(*file_edge_sets)
-
     print(f"Shared HGNC→MONDO edges: {len(shared_edges)}")
-
     if not shared_edges:
         raise RuntimeError("No shared HGNC→MONDO edges found.")
 
     subset_size = int(len(shared_edges) * SUBSET_FRACTION)
     subset_edges = set(random.sample(list(shared_edges), subset_size))
-    print(f"Writing removed edge list → {REMOVED_EDGES_FILE}")
+    print(f"Writing {subset_size} held-out edges ({SUBSET_FRACTION:.0%}) → {REMOVED_EDGES_FILE}")
     write_removed_edges(REMOVED_EDGES_FILE, subset_edges)
-    print(f"Removing {subset_size} edges (20%) from each file")
-    '''
+
+
+def main(resample=False):
+    """Build the *.TestSet.tsv training graphs and the negative test set.
+
+    By default the existing held-out edge list (REMOVED_EDGES_FILE) is reused, as was
+    done for the manuscript runs; pass --resample to draw a new one first.
+    """
+    if resample:
+        sample_test_edges()
+
     subset_edges = []
     with open(REMOVED_EDGES_FILE, 'r') as inF:
         reader = csv.reader(inF, delimiter='\t')
         for row in reader:
             subset_edges.append(row)
         subset_edges.pop(0)
+    subset_edges = {tuple(r) for r in subset_edges}
     print(len(subset_edges))
     for path in INPUT_FILES:
         out_path = Path(path).with_suffix(OUTPUT_SUFFIX)
         kept, removed = filter_file(path, out_path, subset_edges)
         print(f"{path} → kept {kept}, removed {removed}")
 
-
     negativeSampling(KG_DIR + 'monarch-kg_edges.TestSet.tsv', REMOVED_EDGES_FILE, NEG_EDGES_FILE, True)
     print("Done.")
 
 
 if __name__ == "__main__":
-    main()
+    import sys
+    main(resample="--resample" in sys.argv)

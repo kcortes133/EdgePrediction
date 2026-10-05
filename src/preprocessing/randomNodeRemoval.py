@@ -93,48 +93,45 @@ def write_removed_nodes(removed_nodes, output_file):
     df.to_csv(output_file, sep="\t", index=False)
 
 
-def main():
-    removed_nodes_file = 'monarch-kg-Sept2025/monarch-kg-Sept2025/removed_nodes_Rand7_80.tsv'
-    edge_stats_file = 'monarch-kg-Sept2025/monarch-kg-Sept2025/removed_edge_stats7.tsv'
-    tp_edges = 'TP_hgnc_mondo_edges.tsv'
-    n = 6448
-    nodes = 'monarch-kg-Sept2025/monarch-kg-Sept2025/monarch-kg_nodes.tsv'
-    out_nodes = 'monarch-kg-Sept2025/monarch-kg-Sept2025/monarch-kg_nodes7_Rand_80.tsv'
+def main(seed=7):
+    """Random-node-removal control for the TRIM manuscript.
 
-    edges = 'monarch-kg-Sept2025/monarch-kg-Sept2025/monarch-kg_edges.tsv'
-    out_edges = 'monarch-kg-Sept2025/monarch-kg-Sept2025/monarch-kg_edges7_Rand_80.tsv'
-    #seed = 42
-    seed = 7
+    Removes as many nodes as the nIC80 subset (6,448), sampled uniformly from all
+    nodes except the genes and diseases of the held-out test set, from the training
+    graph (unpruned KG with the test edges already removed, *.TestSet.tsv).
+    Seeds used: 42, 7, 13. Note: sampling from list(set(...)) depends on Python's
+    string-hash order, so a seed does not reproduce the same node set across
+    interpreter sessions unless PYTHONHASHSEED is fixed.
+    """
+    kg = 'monarch-kg-Sept2025/monarch-kg-Sept2025/'
+    removed_nodes_file = kg + f'removed_nodes_Rand{seed}_80.tsv'
+    edge_stats_file = kg + f'removed_edge_stats{seed}.tsv'
+    tp_edges = 'data/TP_hgnc_mondo_edges.tsv'
+    n = 6448
+    nodes = kg + 'monarch-kg_nodes.tsv'
+    out_nodes = kg + f'monarch-kg_nodes{seed}_Rand_80.tsv'
+    edges = kg + 'monarch-kg_edges.TestSet.tsv'
+    out_edges = kg + f'monarch-kg_edges{seed}_Rand_80.tsv'
+
     print("Loading protected nodes...")
     protected_nodes = load_protected_nodes(tp_edges)
 
     print("Selecting nodes to remove...")
-    nodes_df, removed_nodes = select_nodes_to_remove(
-        nodes,
-        n,
-        protected_nodes,
-        seed
-    )
+    nodes_df, removed_nodes = select_nodes_to_remove(nodes, n, protected_nodes, seed)
 
     print(f"Removing {len(removed_nodes)} nodes")
-    print("Writing removed nodes...")
     write_removed_nodes(removed_nodes, removed_nodes_file)
 
     print("Filtering nodes file...")
     filter_nodes(nodes_df, removed_nodes, out_nodes)
 
     print("Filtering edges file...")
-    print("Filtering edges file...")
-    total_removed, stats_df = filter_edges(
-        edges,
-        removed_nodes,
-        out_edges,
-        edge_stats_file
-    )
+    total_removed, stats_df = filter_edges(edges, removed_nodes, out_edges, edge_stats_file)
     print(total_removed)
     print(stats_df)
     print("Done.")
 
 
 if __name__ == "__main__":
-    main()
+    import sys
+    main(int(sys.argv[1]) if len(sys.argv) > 1 else 7)

@@ -190,3 +190,6 @@ IC_removal_*/
 
 # Debug byproduct of perceptronBatch.py
 *.tsvdupes.tsv
+
+# Claude session outputs (manuscript drafts, figures)
+Claude outputs/

@@ -13,8 +13,9 @@ Inputs  (per subset, written by src/ml/perceptronBatch.py):
 Outputs (in --out):
     table2_classification.tsv   Table 2 (F1, AUROC, TP/FN/FP/TN)
     ranking_summary.tsv         median rank, top-10 / top-50 fractions (all + rare)
-    fig4c_confusion_counts.png  Figure 4C
-    fig5_topk.png               Figure 5A (all diseases) and 5B (rare diseases)
+    fig3_scores_confusion.*     Figure 3 (A/B score histograms, C confusion counts)
+    fig4_topk.*                 Figure 4 (A all diseases, B rare diseases)
+    fig5_f1_control.*           Figure 5 (F1 vs random-node-removal control)
 
 Before summarising, every gene_ranks.tsv is checked against the TP test set
 and against the other subsets, so results from a stale run are reported
@@ -49,6 +50,9 @@ def load_confusion(folder):
 
 def load_ranks(folder):
     df = pd.read_csv(folder / "gene_ranks.tsv", sep="\t")
+    # Each TP edge is ranked in both orientations; only disease (MONDO) -> candidate genes
+    # is the task described in the paper. The swapped rows rank a MONDO id among genes.
+    df = df[df["disease"].astype(str).str.startswith("MONDO")]
     df = df[pd.to_numeric(df["rank"], errors="coerce").notna()].copy()
     df["rank"] = df["rank"].astype(int)
     df["pair"] = list(zip(df["disease"], df["gene"]))
@@ -75,7 +79,8 @@ def check_consistency(ranks, tp_pairs):
 def topk_summary(df):
     r = df["rank"]
     return {"n_pairs": len(r), "median_rank": float(r.median()),
-            "top10": float((r <= 10).mean()), "top50": float((r <= 50).mean())}
+            "top10": float((r <= 10).mean()), "top20": float((r <= 20).mean()),
+            "top50": float((r <= 50).mean())}
 
 
 def main():
@@ -120,28 +125,69 @@ def main():
     rk.to_csv(out / "ranking_summary.tsv", sep="\t", index=False, float_format="%.3f")
     print("\nRanking summary\n", rk.round(3).to_string(index=False))
 
-    # ---- Figure 4C ----------------------------------------------------
-    fig, ax = plt.subplots(figsize=(7, 4))
-    x = np.arange(len(SUBSETS)); w = 0.2
+    # ---- Figures (numbered as in the manuscript) -----------------------
+    plt.rcParams.update({"font.size": 9, "axes.spines.top": False, "axes.spines.right": False})
+    NAMES = {s: ("None" if s == "none" else f"nIC{s}") for s in SUBSETS}
+    POS, NEG = "#2a6fb0", "#e8892b"
+
+    def save(fig, name):
+        fig.savefig(out / f"{name}.png", dpi=300, bbox_inches="tight")
+        fig.savefig(out / f"{name}.pdf", bbox_inches="tight")
+        plt.close(fig)
+
+    # Figure 3: (A, B) perceptron score histograms, (C) confusion-matrix counts
+    fig = plt.figure(figsize=(7.1, 5.6))
+    gs = fig.add_gridspec(2, 2, height_ratios=[1, 1.05], hspace=0.45, wspace=0.25)
+    bins = np.linspace(0, 1, 21)
+    for k, (s, letter) in enumerate([("none", "A"), ("80", "B")]):
+        ax = fig.add_subplot(gs[0, k])
+        ep = pd.read_csv(runs / f"results_{s}{args.suffix}" / "edge_predictions.tsv", sep="\t")
+        ax.hist(ep.loc[ep.label == 1, "prediction"], bins=bins, color=POS, alpha=0.6, label="Positive pairs")
+        ax.hist(ep.loc[ep.label == 0, "prediction"], bins=bins, color=NEG, alpha=0.6, label="Negative pairs")
+        ax.axvline(0.5, color="0.4", lw=0.8, ls="--")
+        ax.set_xlabel("Perceptron score"); ax.set_ylabel("Gene–disease pairs" if k == 0 else "")
+        ax.set_title(f"{letter}  {NAMES[s]}", loc="left", fontweight="bold")
+        if k == 0: ax.legend(frameon=False, loc="upper left")
+    ax = fig.add_subplot(gs[1, :])
+    x = np.arange(len(SUBSETS)); w = 0.19
     colors = {"TP": "#2e7d32", "FN": "#a5d6a7", "FP": "#1565c0", "TN": "#90caf9"}
     for i, k in enumerate(["TP", "FN", "FP", "TN"]):
-        ax.bar(x + (i - 1.5) * w, t2[k].values, w, label=k, color=colors[k])
-    ax.set_xticks(x, [LABELS[s] for s in SUBSETS]); ax.set_xlabel("IC threshold")
-    ax.set_ylabel("Count"); ax.legend(ncol=4, frameon=False)
-    fig.tight_layout(); fig.savefig(out / "fig4c_confusion_counts.png", dpi=300); plt.close(fig)
+        ax.bar(x + (i - 1.5) * w, t2[k].values, w * 0.92, label=k, color=colors[k])
+    ax.set_xticks(x, [NAMES[s] for s in SUBSETS]); ax.set_xlabel("Subset")
+    ax.set_ylabel("Gene–disease pairs"); ax.legend(ncol=4, frameon=False, loc="upper center", bbox_to_anchor=(0.5, 1.12))
+    ax.set_title("C", loc="left", fontweight="bold")
+    save(fig, "fig3_scores_confusion")
 
-    # ---- Figure 5 -----------------------------------------------------
-    fig, axes = plt.subplots(1, 2, figsize=(10, 4), sharey=True)
+    # Figure 4: top-10 / top-20 / top-50 (A all diseases, B rare diseases)
+    fig, axes = plt.subplots(1, 2, figsize=(7.1, 3.0), sharey=True)
     shades = ["#c6dbef", "#9ecae1", "#6baed6", "#8e3a80", "#3182bd"]
+    ks = ["top10", "top20", "top50"]
     for ax, grp, title in zip(axes, ["all", "rare"], ["A  All diseases", "B  Rare diseases"]):
         sub = rk[rk["diseases"] == grp].set_index("subset")
         for i, s in enumerate(SUBSETS):
-            vals = sub.loc[LABELS[s], ["top10", "top50"]].values * 100
-            ax.bar(np.arange(2) + (i - 2) * 0.16, vals, 0.16, label=LABELS[s], color=shades[i])
-        ax.set_xticks([0, 1], ["Top 10", "Top 50"]); ax.set_title(title, loc="left")
-        ax.yaxis.set_major_formatter(matplotlib.ticker.PercentFormatter())
-    axes[0].set_ylabel("True gene ranked within top k"); axes[0].legend(title="IC threshold", frameon=False)
-    fig.tight_layout(); fig.savefig(out / "fig5_topk.png", dpi=300); plt.close(fig)
+            vals = sub.loc[LABELS[s], ks].values * 100
+            ax.bar(np.arange(len(ks)) + (i - 2) * 0.16, vals, 0.15, label=NAMES[s], color=shades[i])
+        n = int(sub["n_pairs"].iloc[0])
+        ax.set_xticks(range(len(ks)), ["Top 10", "Top 20", "Top 50"])
+        ax.set_title(f"{title} (n = {n:,})", loc="left", fontweight="bold")
+        ax.yaxis.set_major_formatter(matplotlib.ticker.PercentFormatter(decimals=0))
+    axes[0].set_ylabel("Pairs with true gene in top k"); axes[0].legend(frameon=False, fontsize=8, loc="upper left")
+    save(fig, "fig4_topk")
+
+    # Figure 5: F1 per subset vs random-node-removal control
+    if rand_f1:
+        m, sd = np.mean(rand_f1), np.std(rand_f1, ddof=1)
+        fig, ax = plt.subplots(figsize=(4.6, 3.2))
+        ax.axhspan(m - sd, m + sd, color="#d62728", alpha=0.12, lw=0)
+        ax.axhline(m, color="#d62728", ls="--", lw=1.2, label=f"Random removal (n = {len(rand_f1)}): {m:.3f} ± {sd:.3f}")
+        ax.plot(range(len(SUBSETS)), t2["F1"].values, "o-", color="#2a6fb0", lw=2, ms=6, label="nIC-pruned subsets")
+        for i, v in enumerate(t2["F1"].values):
+            ax.annotate(f"{v:.3f}", (i, v), textcoords="offset points", xytext=(0, 7), ha="center", fontsize=8)
+        ax.set_xticks(range(len(SUBSETS)), [NAMES[s] for s in SUBSETS]); ax.set_xlabel("Subset")
+        ax.set_ylabel("F1"); ax.legend(frameon=False, fontsize=8, loc="lower left")
+        lo = min(t2["F1"].min(), m - sd); hi = max(t2["F1"].max(), m + sd)
+        ax.set_ylim(lo - 0.02, hi + 0.02)
+        save(fig, "fig5_f1_control")
 
     print(f"\nOutputs written to {out}")
     if not consistent:

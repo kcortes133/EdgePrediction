@@ -7,10 +7,11 @@
 | `TP_hgnc_mondo_edges.tsv` | Held-out true-positive gene (HGNC) → disease (MONDO) edges (3,201 edges = 3,048 unique gene–disease pairs; predicates `causes`, `gene_associated_with_condition`, `contributes_to`) removed from the Monarch KG before training |
 | `TN_hgnc_mondo_edges1.tsv` | Sampled true-negative gene–disease pairs (tab-separated; used in all runs) |
 | `TN_hgnc_mondo_edges.tsv` | Same TN set, original comma-separated export |
+| `TN_TP_overlap_pairs.tsv` | The 4 TN pairs that also occur in the TP set under a different predicate; removed from all results by `src/analysis/remove_tn_overlap.py` |
 
 Other inputs in `analysis/data/`:
 
-- `geneCandidates.txt` – candidate genes ranked for each test disease
+- `geneCandidates.txt` – 16,623 HGNC protein-coding genes (SO:0001217) used for all manuscript runs: all 14,047 protein-coding genes with no gene–disease connection in the KG plus the protein-coding genes of an earlier held-out edge file (removedEdges.tsv, which later became the test set). `src/preprocessing/makeGeneCandidates.py` reproduces the procedure from the KGX files (same 14,047 genes; the held-out part uses the final TP file). All TP genes are added to the pool at run time by `perceptronBatch.py`.
 - `Rare Disease Annotation.csv`, `Rare Disease Gene Associations.csv`,
   `Disease Annotation.csv` – rare-disease flags and annotation types from
   `src/preprocessing/rareDiseaseSubsets.py`

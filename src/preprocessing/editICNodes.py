@@ -225,13 +225,17 @@ def plot_multi_ontology_ic_histogram(ic_maps, bins=50):
         )
         i+=1
 
-    plt.title("Information Content Distribution by Ontology for Robokopgtfr")
-    plt.xlabel("Information Content (IC)")
-    plt.ylabel("Number of Terms")
+    # Manuscript Figure 2: nIC thresholds used for the pruned subsets
+    for thr, col in ((40, "orange"), (60, "green"), (80, "red")):
+        plt.axvline(thr, color=col, linestyle="--", linewidth=1.5, label=f"nIC {thr}")
+    plt.title("Normalized information content (nIC) by ontology, Monarch KG")
+    plt.xlabel("Normalized information content (nIC)")
+    plt.ylabel("Number of terms")
     plt.legend()
     plt.grid(axis='y', alpha=0.7)
     plt.tight_layout()
-    plt.show()
+    plt.savefig("fig2_nic_distribution.png", dpi=300)
+    plt.close()
 
 
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 # Rerun the five TRIM perceptron experiments (IC threshold none/40/60/80/100)
-# on the current test set, then rebuild Table 2 and Figures 4-6.
+# on the current test set, then rebuild Tables 2-3 and Figures 3-5.
 #
 # Submit from the repository root:
 #     sbatch scripts/slurm/rerun_paper.sh
